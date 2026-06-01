@@ -204,6 +204,24 @@ app.get("/api/health", async (req, res) => {
   }
 });
 
+
+app.get("/debug", async (req, res) => {
+  try {
+    const yt = await run("yt-dlp --version");
+    const ff = await run("ffmpeg -version");
+
+    res.json({
+      yt_dlp: yt,
+      ffmpeg: ff.split("\n")[0]
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
+
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, async () => {
   console.log(`✅ Server securely running at port: ${PORT}`);
